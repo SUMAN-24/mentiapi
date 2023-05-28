@@ -14,11 +14,11 @@ userRouter.post('/signup', async (req, res)=>{
             }else{
                 const user = new UserModel({name, email, password:hashed_password});
                 await user.save();
-                res.send("Registered");
+                res.send({"msg":"Registration Successfull"});
             }
         });
     }catch (err){
-        res.send("Error in registering the user");
+        res.send({"msg":"Error while registering the user"});
     }
 })
 
