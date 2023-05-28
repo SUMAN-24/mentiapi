@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const userRouter = express.Router();
 
-userRouter.post('/signup?referral=homepage', async (req, res)=>{
+userRouter.post('/signup', async (req, res)=>{
     const {name, email, password} = req.body;
     try{
         bcrypt.hash(password, 5, async(err, hashed_password) => {
@@ -30,7 +30,7 @@ userRouter.post('/login', async (req, res)=>{
         if(user.length > 0){
             bcrypt.compare(password, hashed_password, (err, result) =>{
                if(result){
-                const token = jwt.sign({ foo: 'bar' }, 'mentikey');
+                const token = jwt.sign({ foo: 'bar' }, process.env.key);
                 res.send({"msg":"Login Successfull","token":token});
                }else{
                 res.send("Wrong credentials");
