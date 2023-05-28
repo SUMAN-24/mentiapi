@@ -22,6 +22,20 @@ userRouter.post('/signup', async (req, res)=>{
     }
 })
 
+userRouter.get('/users', async (req, res)=>{
+    const {email} = req.body;
+    try{ 
+        const user = await UserModel.find({email});
+        if(user.length > 0){
+            res.send({"msg": true})
+        }else{
+            res.send({"msg": false})
+        }
+    }catch (err){
+        res.send({"msg":"Error while getting the user"});
+    }
+})
+
 userRouter.post('/login', async (req, res)=>{
     const {email, password} = req.body;
     try{
@@ -30,17 +44,17 @@ userRouter.post('/login', async (req, res)=>{
         if(user.length > 0){
             bcrypt.compare(password, hashed_password, (err, result) =>{
                if(result){
-                const token = jwt.sign({ foo: 'bar' }, process.env.key);
+                const token = jwt.sign({ random: process.env.random_string }, process.env.key);
                 res.send({"msg":"Login Successfull","token":token});
                }else{
-                res.send("Wrong credentials");
+                res.send({"msg":err});
                }
             });         
         }else {
-            res.send("Wrong credentials");
+            res.send({"msg":"Wrong credentials"});
         }
     }catch (err){
-        res.send("Error in registering the user");
+        res.send({"msg:":"Error while logging the user"});
     }
 })
 
