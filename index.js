@@ -1,6 +1,7 @@
 const express = require('express');
 const {connection} = require('./configs/db');
 const {userRouter} = require('./routes/User.route');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
@@ -18,12 +19,12 @@ app.use(userRouter);
 //       });
 // })
 
-app.listen(8080,async ()=>{
+app.listen(process.env.port, async ()=>{
     try{
         await connection;
         console.log('Connected to DB');
     }catch (err){
         console.log('Error while connecting to db');
     }
-    console.log("Running at 8080 Port");
+    console.log(`Running at ${process.env.port} Port`);
 })
